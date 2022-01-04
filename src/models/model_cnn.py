@@ -1,6 +1,7 @@
 import torch
 import torch.nn.functional as F
 from torch import nn
+from matplotlib import pyplot as plt
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print("Current device: {}".format(device))
@@ -65,12 +66,13 @@ def validation(model, testloader, criterion):
 
 
 def train(
-    model, trainloader, testloader, criterion, optimizer=None, epochs=5, print_every=40
+    model, trainloader, testloader, criterion, optimizer=None, epochs=5, print_every=20
 ):
     if optimizer is None:
         optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
     steps = 0
     running_loss = 0
+    plot_data = []
     for e in range(epochs):
         # Model in training mode, dropout is on
         model.train()
@@ -105,7 +107,12 @@ def train(
                     "Test Accuracy: {:.3f}".format(accuracy / len(testloader)),
                 )
 
+                plot_data.append(running_loss / print_every)
+
                 running_loss = 0
 
                 # Make sure dropout and grads are on for training
                 model.train()
+    plt.plot(plot_data)
+    plt.show()
+    plt.savefig("./reports/figures/loss_curve_ep_{}".format(epochs))
