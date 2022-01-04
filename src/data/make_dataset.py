@@ -39,7 +39,7 @@ def mnist(input_filepath, output_filepath):
 
     torch_imgs, torch_labels = (
         torch.from_numpy(imgs).unsqueeze(1),
-        torch.from_numpy(labels).unsqueeze(1),
+        torch.from_numpy(labels),
     )
     train = TensorDataset(torch_imgs.float(), torch_labels)
 
@@ -50,7 +50,7 @@ def mnist(input_filepath, output_filepath):
 
     torch_imgs, torch_labels = (
         torch.from_numpy(imgs).unsqueeze(1),
-        torch.from_numpy(labels).unsqueeze(1),
+        torch.from_numpy(labels),
     )
     test = TensorDataset(torch_imgs.float(), torch_labels)
 

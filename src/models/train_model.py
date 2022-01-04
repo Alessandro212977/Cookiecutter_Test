@@ -1,13 +1,12 @@
-import model as mdl
+import model_cnn as mdl
 import torch
-from model import MyAwesomeModel
 from torch import nn
 
 
 print("Training day and night")
 
 # TODO: Implement training loop here
-model = MyAwesomeModel(784, 10, [256])
+model = mdl.MyAwesomeModel()#MyAwesomeModel(784, 10, [256])
 
 train_set, test_set = torch.load("../../data/processed/train_dataset.pt"), torch.load("../../data/processed/test_dataset.pt")
 print("dataset loaded")
@@ -25,7 +24,7 @@ print(type(images))
 print(images.shape)
 print(labels.shape)
 
-mdl.train(model, train_set, test_set, nn.NLLLoss(), epochs=1)
+mdl.train(model, trainloader, testloader, nn.NLLLoss(), epochs=1)
 
 checkpoint = {
     "input_size": 784,
