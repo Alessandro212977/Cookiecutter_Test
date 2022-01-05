@@ -2,6 +2,9 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 from matplotlib import pyplot as plt
+import os
+
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print("Current device: {}".format(device))
@@ -114,5 +117,6 @@ def train(
                 # Make sure dropout and grads are on for training
                 model.train()
     plt.plot(plot_data)
-    plt.show()
+    #plt.show()
+    os.makedirs("./reports/figures/", exist_ok=True)
     plt.savefig("./reports/figures/loss_curve_ep_{}".format(epochs))

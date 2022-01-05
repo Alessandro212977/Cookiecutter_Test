@@ -1,6 +1,9 @@
 import model_cnn as mdl
 import torch
 from torch import nn
+import os
+
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 print("Training day and night")
 
@@ -35,4 +38,5 @@ mdl.train(model, trainloader, testloader, nn.NLLLoss(), epochs=1)
 
 print("Saving the model")
 checkpoint = model.state_dict()
+os.makedirs("models/checkpoint/", exist_ok=True)
 torch.save(checkpoint, "models/checkpoint.pth")
