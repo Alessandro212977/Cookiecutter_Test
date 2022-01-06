@@ -1,0 +1,22 @@
+{
+    "os": "Windows-10-10.0.19044-SP0",
+    "python": "3.9.7",
+    "heartbeatAt": "2022-01-06T09:57:00.497594",
+    "startedAt": "2022-01-06T09:56:55.282696",
+    "docker": null,
+    "cpu_count": 4,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "C:\\Users\\alex2\\Desktop\\Cookiecutter_Test\\src\\models\\train_model.py",
+    "codePath": "src\\models\\train_model.py",
+    "git": {
+        "remote": "https://github.com/Alessandro212977/Cookiecutter_Test.git",
+        "commit": "42975bb6c23f0624730367f9f65114173136e684"
+    },
+    "email": "s212977@dtu.dk",
+    "root": "C:/Users/alex2/Desktop/Cookiecutter_Test",
+    "host": "ALE-ZBK",
+    "username": "alex2",
+    "executable": "C:\\ProgramData\\Anaconda3\\python.exe"
+}

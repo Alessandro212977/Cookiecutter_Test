@@ -2,9 +2,12 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 from matplotlib import pyplot as plt
+import wandb
 import os
 
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
+
+wandb.init()
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print("Current device: {}".format(device))
@@ -73,6 +76,10 @@ def train(
 ):
     if optimizer is None:
         optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
+
+    wandb.watch(model, log_freq=100)
+
+    
     steps = 0
     running_loss = 0
     plot_data = []
@@ -99,6 +106,8 @@ def train(
                 # Model in inference mode, dropout is off
                 model.eval()
 
+                wandb.log({"loss": loss})
+
                 # Turn off gradients for validation, will speed up inference
                 with torch.no_grad():
                     test_loss, accuracy = validation(model, testloader, criterion)
@@ -109,7 +118,9 @@ def train(
                     "Test Loss: {:.3f}.. ".format(test_loss / len(testloader)),
                     "Test Accuracy: {:.3f}".format(accuracy / len(testloader)),
                 )
-
+                wandb.log({"training_loss": running_loss / print_every})
+                wandb.log({"test_loss": test_loss / len(testloader)})
+                wandb.log({"accuracy": accuracy / len(testloader)})
                 plot_data.append(running_loss / print_every)
 
                 running_loss = 0
