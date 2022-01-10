@@ -41,6 +41,8 @@ class MyAwesomeModel(nn.Module):
 
     def forward(self, x):
         """ Forward pass through the network, returns the output logits """
+        if x.ndim != 4:
+            raise ValueError('Expected input to a 4D tensor')
         x = self.conv1(x)
         x = self.conv2(x)
 
