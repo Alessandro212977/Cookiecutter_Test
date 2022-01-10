@@ -6,13 +6,13 @@ from torch import nn
 class MyAwesomeModel(nn.Module):
     def __init__(self, input_size, output_size, hidden_layers, drop_p=0.5):
         """ Builds a feedforward network with arbitrary hidden layers.
-        
+
             Arguments
             ---------
             input_size: integer, size of the input layer
             output_size: integer, size of the output layer
             hidden_layers: list of integers, the sizes of the hidden layers
-        
+
         """
         super().__init__()
         # Input to a hidden layer
@@ -47,7 +47,7 @@ def validation(model, testloader, criterion):
         output = model.forward(images)
         test_loss += criterion(output, labels).item()
 
-        ## Calculating the accuracy
+        # Calculating the accuracy
         # Model's output is log-softmax, take exponential to get the probabilities
         ps = torch.exp(output)
         # Class with highest probability is our predicted class, compare with true label

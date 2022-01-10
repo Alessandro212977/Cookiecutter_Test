@@ -1,2 +1,2 @@
-msg = 'hallo from vscode'
+msg = "hallo from vscode"
 print(msg)

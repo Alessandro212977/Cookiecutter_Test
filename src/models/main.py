@@ -77,7 +77,7 @@ class TrainOREvaluate(object):
 
         # TODO: Implement evaluation logic here
 
-        model = load_checkpoint(args.load_model_from)
+        # model = load_checkpoint(args.load_model_from)
         _, test_set = mnist()
 
 

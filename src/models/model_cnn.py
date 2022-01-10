@@ -1,54 +1,57 @@
-import torch
-import torch.nn.functional as F
-from torch import nn
-from matplotlib import pyplot as plt
-import wandb
 import os
 
-os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
+import torch
+import torch.nn.functional as F
+from matplotlib import pyplot as plt
+from torch import nn
 
-#wandb.init()
+# import wandb
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
+# wandb.init()
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Current device: {}".format(device))
+
 
 class MyAwesomeModel(nn.Module):
     def __init__(self, drop_p=0.5):
         """ Builds a feedforward network with arbitrary hidden layers.
-        
+
             Arguments
             ---------
             input_size: integer, size of the input layer
             output_size: integer, size of the output layer
             hidden_layers: list of integers, the sizes of the hidden layers
-        
+
         """
         super().__init__()
 
-        self.conv1 = nn.Sequential(nn.Conv2d(in_channels=1, 
-                                             out_channels=16, 
-                                             kernel_size=5, 
-                                             stride=1, 
-                                             padding=2), 
-                                   nn.ReLU(),
-                                   nn.MaxPool2d(kernel_size=2))
-        self.conv2 = nn.Sequential(nn.Conv2d(16, 32, 5, 1, 2),
-                                    nn.ReLU(),
-                                    nn.MaxPool2d(2))
-        self.out = nn.Linear(32*7*7, 10)
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(
+                in_channels=1, out_channels=16, kernel_size=5, stride=1, padding=2
+            ),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2),
+        )
+        self.conv2 = nn.Sequential(
+            nn.Conv2d(16, 32, 5, 1, 2), nn.ReLU(), nn.MaxPool2d(2)
+        )
+        self.out = nn.Linear(32 * 7 * 7, 10)
 
-        #self.dropout = nn.Dropout(p=drop_p)
+        # self.dropout = nn.Dropout(p=drop_p)
 
     def forward(self, x):
         """ Forward pass through the network, returns the output logits """
         if x.ndim != 4:
-            raise ValueError('Expected input to a 4D tensor')
+            raise ValueError("Expected input to a 4D tensor")
         x = self.conv1(x)
         x = self.conv2(x)
 
         x = x.view(x.size(0), -1)
         x = self.out(x)
-        
+
         return F.log_softmax(x, dim=1)
 
 
@@ -57,12 +60,12 @@ def validation(model, testloader, criterion):
     test_loss = 0
     for images, labels in testloader:
 
-        #images = images.resize_(images.size()[0], 784)
+        # images = images.resize_(images.size()[0], 784)
 
         output = model.forward(images)
         test_loss += criterion(output, labels).item()
 
-        ## Calculating the accuracy
+        # Calculating the accuracy
         # Model's output is log-softmax, take exponential to get the probabilities
         ps = torch.exp(output)
         # Class with highest probability is our predicted class, compare with true label
@@ -79,9 +82,8 @@ def train(
     if optimizer is None:
         optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
 
-    #wandb.watch(model, log_freq=100)
+    # wandb.watch(model, log_freq=100)
 
-    
     steps = 0
     running_loss = 0
     plot_data = []
@@ -92,12 +94,12 @@ def train(
             steps += 1
 
             # Flatten images into a 784 long vector
-            #images.resize_(images.size()[0], 784)
+            # images.resize_(images.size()[0], 784)
 
             optimizer.zero_grad()
-            #print("forwards size {}".format(images.size()))
+            # print("forwards size {}".format(images.size()))
             output = model.forward(images)
-            #print("OUTPUT", output.size(), labels.size())
+            # print("OUTPUT", output.size(), labels.size())
             loss = criterion(output, labels)
             loss.backward()
             optimizer.step()
@@ -108,7 +110,7 @@ def train(
                 # Model in inference mode, dropout is off
                 model.eval()
 
-                #wandb.log({"loss": loss})
+                # wandb.log({"loss": loss})
 
                 # Turn off gradients for validation, will speed up inference
                 with torch.no_grad():
@@ -120,9 +122,9 @@ def train(
                     "Test Loss: {:.3f}.. ".format(test_loss / len(testloader)),
                     "Test Accuracy: {:.3f}".format(accuracy / len(testloader)),
                 )
-                #wandb.log({"training_loss": running_loss / print_every})
-                #wandb.log({"test_loss": test_loss / len(testloader)})
-                #wandb.log({"accuracy": accuracy / len(testloader)})
+                # wandb.log({"training_loss": running_loss / print_every})
+                # wandb.log({"test_loss": test_loss / len(testloader)})
+                # wandb.log({"accuracy": accuracy / len(testloader)})
                 plot_data.append(running_loss / print_every)
 
                 running_loss = 0
@@ -130,8 +132,9 @@ def train(
                 # Make sure dropout and grads are on for training
                 model.train()
     plt.plot(plot_data)
-    #plt.show()
+    # plt.show()
     os.makedirs("./reports/figures/", exist_ok=True)
     plt.savefig("./reports/figures/loss_curve_ep_{}".format(epochs))
 
-#wandb.finish()
+
+# wandb.finish()
