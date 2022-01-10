@@ -1,0 +1,22 @@
+{
+    "os": "Windows-10-10.0.19044-SP0",
+    "python": "3.9.7",
+    "heartbeatAt": "2022-01-10T09:29:59.270019",
+    "startedAt": "2022-01-10T09:29:55.709322",
+    "docker": null,
+    "cpu_count": 4,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "C:\\Users\\alex2\\Desktop\\MNIST_Exercise\\test\\test_model.py",
+    "codePath": "test\\test_model.py",
+    "git": {
+        "remote": "https://github.com/Alessandro212977/Cookiecutter_Test.git",
+        "commit": "bf17e5d58d47b1fe142db15e2ab5fcad681d42cd"
+    },
+    "email": "s212977@dtu.dk",
+    "root": "C:/Users/alex2/Desktop/MNIST_Exercise",
+    "host": "ALE-ZBK",
+    "username": "alex2",
+    "executable": "C:\\ProgramData\\Anaconda3\\python.exe"
+}
