@@ -79,7 +79,7 @@ def train(
     if optimizer is None:
         optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
 
-    wandb.watch(model, log_freq=100)
+    #wandb.watch(model, log_freq=100)
 
     
     steps = 0

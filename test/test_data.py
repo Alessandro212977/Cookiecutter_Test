@@ -1,6 +1,6 @@
 import torch, os, pytest
 
-@pytest.mark.skipif(not os.path.exists(), reason='data files not found')
+@pytest.mark.skipif(not os.path.exists("data/processed/train_dataset.pt"), reason='data files not found')
 def test_datasets():
     train_set, test_set = torch.load("data/processed/train_dataset.pt"), torch.load("data/processed/test_dataset.pt")
 
